@@ -1,5 +1,6 @@
 package hska.aktiehq;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//MainActivityFragment
+public class AktienlisteFragment extends Fragment{
 
-public class MainActivityFragment extends Fragment{
-
-    public MainActivityFragment() {
+    public AktienlisteFragment() {
     }
 
     @Override
@@ -46,10 +47,21 @@ public class MainActivityFragment extends Fragment{
                         R.id.list_item_aktienliste_textview, // ID des TextViews
                         aktienListe); // Beispieldaten in einer ArrayList
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_aktienliste, container, false);
 
         ListView aktienlisteListView = (ListView) rootView.findViewById(R.id.listview_aktienliste);
         aktienlisteListView.setAdapter(aktienlisteAdapter);
+
+        aktienlisteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                String aktienInfo = (String) adapterView.getItemAtPosition(position);
+                // Intent erzeugen und Starten der AktiendetailActivity mit explizitem Intent
+                Intent aktiendetailIntent = new Intent(getActivity(), AktiendetailActivity.class);
+                aktiendetailIntent.putExtra(Intent.EXTRA_TEXT, aktienInfo);
+                startActivity(aktiendetailIntent);
+            }
+        });
 
         return rootView;
     }
